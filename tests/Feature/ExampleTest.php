@@ -12,7 +12,18 @@ class ExampleTest extends TestCase
         $datePast = (new Carbon())->subYear()->setDay(21);
         $dateFuture = (new Carbon())->addYears(1);
 
-        $response = $this->get('/warmupevents');
+        $response = $this->get('/eventswithworkshops');
+        $response->assertStatus(200)
+            ->assertJsonCount(3)
+            ->assertJsonPath('0.name', 'Laravel convention '.$datePast->year)
+            ->assertJsonPath('1.name', 'Laravel convention '.$dateFuture->year)
+            ->assertJsonPath('2.name', 'React convention '.$dateFuture->year);
+    }
+    public function testWorkshopEvents() {
+        $datePast = (new Carbon())->subYear()->setDay(21);
+        $dateFuture = (new Carbon())->addYears(1);
+
+        $response = $this->get('/eventswithworkshops');
         $response->assertStatus(200)
             ->assertJsonCount(3)
             ->assertJsonPath('0.name', 'Laravel convention '.$datePast->year)
