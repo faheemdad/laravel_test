@@ -36,7 +36,51 @@ class CreateCinemaSchema extends Migration
      */
     public function up()
     {
-        throw new \Exception('implement in coding task 4, you can ignore this exception if you are just running the initial migrations.');
+        Schema::create('showrooms',function(Blueprint $table){
+
+            $table->bigIncrements('id');
+            $table->string('name');
+            $table->timestamps();
+
+        });
+
+        Schema::create('movies',function(Blueprint $table){
+
+            $table->bigIncrements('id');
+            $table->foreign('showroom_id')->references('id')->on('showrooms');
+            $table->enum('type', ['film', 'show']);
+            $table->string('name');
+
+            $table->double('price');
+            $table->timestamps();
+
+        });
+
+        Schema::create('schedule', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('movie_id');
+            $table->integer('showroom_id');
+            $table->dateTime('start_date_time');
+            $table->timestamps();
+
+        });
+
+        Schema::create('rooms', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('showroom_id');
+            $table->string('seats');
+            $table->timestamps();
+
+        });
+        Schema::create('tickets', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('schedule_id');
+            $table->integer('user_id');
+            $table->string('seat');
+            $table->timestamps();
+
+        });
+//        throw new \Exception('implement in coding task 4, you can ignore this exception if you are just running the initial migrations.');
     }
 
     /**
